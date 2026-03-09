@@ -7,50 +7,42 @@
 # src/Components/Header.jsx
 
 ### Overview
-This file defines the `Header` React functional component, which renders the application's global header. It includes a logo that can navigate to the home page, and a "My Account" section with a hover-activated dropdown menu for navigation to home, login (with logout functionality), and password reset pages.
+This file defines the `Header` React component, which renders a persistent navigation and account management bar at the top of the application's user interface.
 
 ### Architecture & Role
-The `Header` component resides in the presentation layer of the frontend architecture. It is a reusable UI component responsible for rendering a consistent top-level navigation and branding element across various application pages. It integrates with `react-router-dom` for client-side navigation.
+This component is a presentational element within the React frontend application. It resides in the `Components` directory, indicating its role as a reusable UI building block. It belongs to the view layer, responsible for displaying interactive UI elements and handling basic user interactions.
 
 ### Key Components
-*   **`Header` functional component**: The main React component that renders the header UI. It accepts `isNavigatable` and `isHomeNav` as props.
-*   **`isNavigatable` prop**: A boolean prop that controls whether the logo and "Home" dropdown item trigger navigation.
-*   **`isHomeNav` prop**: A boolean prop that determines the background color of the header, likely for distinguishing home page headers.
-*   **`useState(false)` (`hover`)**: Manages the visibility state of the "My Account" dropdown menu.
-*   **`useNavigate()`**: A hook from `react-router-dom` used for programmatic navigation between routes.
+- **`Header` function component**: The primary React component responsible for rendering the header bar.
+- **`useState` hook**: Manages the `hover` state, controlling the visibility of the "My Account" dropdown menu.
+- **`useNavigate` hook**: Provided by `react-router-dom`, used for programmatic navigation between different routes.
+- **`logo` (image asset)**: The application's branding logo, which also functions as a navigation trigger.
+- **`loginIcon` (image asset)**: An icon associated with the "My Account" section.
+- **`DownArrow` (image asset)**: An icon indicating a dropdown menu for the "My Account" section.
 
 ### Execution Flow / Behavior
-1.  The `Header` component renders a full-width container with a logo on the left and a "My Account" button on the right.
-2.  The header's background color is conditionally applied based on the `isHomeNav` prop.
-3.  Clicking the logo navigates to the `/home` route, but only if the `isNavigatable` prop is `true`.
-4.  Hovering over the "My Account" button toggles the `hover` state, making a dropdown menu visible or hidden.
-5.  The dropdown menu contains three options:
-    *   **"Home"**: Navigates to `/home` if `isNavigatable` is `true`.
-    *   **"Log Out"**: Navigates to `/login` and also removes the item named "data" from `localStorage`.
-    *   **"Change Password"**: Navigates to `/resetpassword`.
+1. The `Header` component renders a top-level `div` containing the application logo on the left and a "My Account" interactive element on the right.
+2. The logo, when clicked, navigates to the `/home` route if the `isNavigatable` prop is true.
+3. Hovering over the "My Account" section triggers the display of a dropdown menu, managed by the `hover` state.
+4. The dropdown menu includes options: "Home", "Log Out", and "Change Password".
+5. Clicking "Home" in the dropdown navigates to `/home` if `isNavigatable` is true.
+6. Clicking "Log Out" navigates to `/login` and clears an item named "data" from `localStorage`.
+7. Clicking "Change Password" navigates to `/resetpassword`.
+8. The header's background color is dynamically set based on the `isHomeNav` prop.
 
 ### Dependencies
-*   **`react`**: Provides the core React library for component definition and state management (`useState`).
-*   **`react-router-dom`**: Provides the `useNavigate` hook for client-side routing.
-*   **`../Assets/logo.png`**: Local asset for the application's branding logo.
-*   **`../Assets/Login_icon 1.svg`**: Local asset for the login icon displayed next to "My Account".
-*   **`../Assets/downArrow.svg`**: Local asset for the down arrow icon in the "My Account" button.
+- **`react`**: The core library for building UI components.
+- **`react-router-dom`**: Provides the `useNavigate` hook for client-side routing.
+- **`../Assets/logo.png`**: An internal image asset used for the application's logo.
+- **`../Assets/Login_icon 1.svg`**: An internal SVG asset used for the login icon.
+- **`../Assets/downArrow.svg`**: An internal SVG asset used for the dropdown arrow icon.
 
 ### Design Notes
-*   The component uses inline Tailwind CSS classes for styling, providing a utility-first approach to UI development.
-*   The `isNavigatable` prop introduces conditional navigation logic, suggesting that the header might be used in contexts where navigation is restricted (e.g., during authentication flows).
-*   Logout functionality directly manipulates `localStorage` to clear session data, which implies a client-side session management strategy.
-*   The dropdown menu relies on `onMouseOver` and `onMouseOut` events for visibility, which can sometimes be less accessible than click-based toggles for certain user interfaces.
+- The component accepts `isNavigatable` and `isHomeNav` props, allowing external control over its navigation behavior and styling, promoting reusability in different contexts.
+- The "Log Out" functionality includes `localStorage.removeItem("data")`, indicating that user session or authentication tokens are stored in `localStorage` under the key "data".
+- Styling is implemented using Tailwind CSS classes directly within the JSX, following a utility-first CSS methodology.
+- The hover-based dropdown interaction, while functional, may present accessibility challenges for keyboard-only users.
+- Route paths are hardcoded (`/home`, `/login`, `/resetpassword`). Centralizing these paths could improve maintainability.
 
 ### Diagram
-```mermaid
-graph TD
-A[HeaderComponent] --> B[RenderUI]
-B[RenderUI] --> C[LogoNavigation]
-B[RenderUI] --> D[AccountDropdown]
-D[AccountDropdown] --> E[DropdownInteractions]
-E[DropdownInteractions] --> F[ClientSideNavigation]
-E[DropdownInteractions] --> G[LogoutProcess]
-G[LogoutProcess] --> H[ClearLocalStorage]
-G[LogoutProcess] --> I[NavigateToLogin]
-```
+None significant.
