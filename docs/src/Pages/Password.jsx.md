@@ -1,70 +1,67 @@
 # src/Pages/Password.jsx
 
-> **Source File:** [src/Pages/Password.jsx](https://github.com/test-company-prowiz/maxify_frontend/blob/main/src/Pages/Password.jsx)  
-> **Repository:** `maxify_frontend`  
+> **Source File:** [src/Pages/Password.jsx](https://github.com/test-company-prowiz/maxify_frontend/blob/main/src/Pages/Password.jsx)
+> **Repository:** `maxify_frontend`
 > **Branch:** `main`
 
 # src/Pages/Password.jsx
 
 ### Overview
-This file defines the `PasswordPageReset` React component, which provides a user interface for resetting a password. It allows users to submit a new password using a token extracted from the URL, communicating with a backend API to finalize the password change.
+This file defines the `PasswordPageReset` React component, which provides a user interface for resetting a user's password. It captures a new password from the user and sends it to the backend API along with a reset token obtained from the URL parameters.
 
 ### Architecture & Role
-This file functions as a client-side user interface component within a React application. It resides in the presentation layer, specifically a "Page" level component, responsible for rendering the password reset form and handling user interactions to initiate an API call for password modification. It is a direct consumer of backend API services.
+This file functions as a client-side page component within the frontend application. It resides in the presentation layer, handling user input, form validation, and direct interaction with the authentication service of the backend API to perform a password reset operation.
 
 ### Key Components
-*   **`PasswordPageReset`**: The main functional React component that renders the password reset form.
-    *   Utilizes `useParams` to extract a reset `token` from the URL.
-    *   Manages loading state (`loading`) and UI visibility (`isPassVisible`, `emailField`, `successPage`) using `useState` hooks.
-    *   Integrates `react-hook-form` for form management, validation, and submission handling via `register` and `handleSubmit`.
-    *   Defines `notify` and `successNotify` functions for displaying toast messages using `react-toastify`.
-    *   **`onSubmit(data)`**: An asynchronous function that executes on form submission. It sends a `POST` request to the backend API (`/auth/resetpassword/{token}`) with the new password. Handles both success and error responses by updating loading state and showing toast notifications.
+*   **`PasswordPageReset` (Function Component)**: The primary React component responsible for rendering the password reset form and managing its state and logic.
+*   **`useParams` (react-router-dom)**: Hook used to extract the `token` parameter from the URL, which is essential for identifying the specific password reset request.
+*   **`useState` (React)**: Manages local component state, including `loading` status, `isPassVisible` (though currently unused), `emailField` (controls form section visibility, always true in active code), and `successPage` (currently inactive).
+*   **`useForm` (react-hook-form)**: Provides robust form management, including registration of input fields, handling submission, validating input, and tracking form state.
+*   **`onSubmit` (Async Function)**: Handles the form submission logic. It makes an `axios.post` request to the backend API to reset the password, updates loading state, and displays notifications.
+*   **`ToastContainer`, `toast` (react-toastify)**: Used for displaying success and error messages to the user.
+*   **`Spin`, `LoadingOutlined` (antd, ant-design/icons)**: Renders a loading spinner during API requests.
 
 ### Execution Flow / Behavior
-1.  When the `PasswordPageReset` component mounts, it extracts a `token` from the URL parameters using `useParams`.
-2.  The component renders a form prompting the user to enter a new password.
-3.  Upon user submission of the form, the `handleSubmit` function from `react-hook-form` invokes the `onSubmit` handler.
-4.  The `onSubmit` handler sets the `loading` state to `true`, which displays a loading spinner to the user.
-5.  An `axios.post` request is made to the configured API endpoint (`${API}/auth/resetpassword/${token}`) with the new password.
-6.  If the API call is successful:
-    *   The `loading` state is set to `false`.
-    *   A success toast notification ("Password Changed Successfully") is displayed.
-7.  If the API call fails (e.g., due to an invalid token or network error):
-    *   The `loading` state is set to `false`.
-    *   An error toast notification is displayed, often including specific details from the API response (`err.response.data.detail`).
-8.  The page also provides a "Back to Login" link using `react-router-dom`'s `Link` component.
+1.  Upon loading, the `PasswordPageReset` component retrieves a `token` from the URL parameters.
+2.  It renders a form prompting the user to enter a "New Password".
+3.  The form uses `react-hook-form` for client-side validation, marking the password field as required.
+4.  When the user submits the form, the `handleSubmit` function from `useForm` triggers the `onSubmit` asynchronous function.
+5.  The `onSubmit` function sets the `loading` state to `true`, displaying a spinner.
+6.  An `axios.post` request is made to `${API}/auth/resetpassword/${token}` with the new password.
+7.  Upon successful response from the API, the `loading` state is set to `false`, and a success notification ("Password Changed Successfully") is displayed using `react-toastify`.
+8.  If the API call fails, the `loading` state is set to `false`, and an error notification containing the API's error detail is shown.
+9.  The `ToastContainer` at the bottom of the page renders the actual toast notifications.
 
 ### Dependencies
 *   **`react`**: Core library for building user interfaces.
-*   **`useState`**: React hook for managing component local state.
-*   **`logo`**: An image asset (`../Assets/logo.png`) used for branding.
-*   **`react-hook-form`**: Library for efficient and flexible form validation and management.
-*   **`react-router-dom`**: Provides routing capabilities, specifically `Link` for navigation, `useNavigate` for programmatic navigation, and `useParams` for extracting URL parameters.
-*   **`App, API`**: Imports the `API` constant from `../App`, which defines the base URL for API requests.
-*   **`axios`**: A promise-based HTTP client for making API requests.
-*   **`react-toastify`**: Library for displaying toast notifications to the user.
-*   **`antd`**: A UI library, specifically importing `Spin` for loading indicators and `LoadingOutlined` icon.
+*   **`useState`**: React hook for managing component state.
+*   **`logo` (./Assets/logo.png)**: Image asset used for the application logo display.
+*   **`useForm` (react-hook-form)**: Library for efficient form validation and management.
+*   **`Link`, `useNavigate`, `useParams` (react-router-dom)**: Hooks for declarative navigation, programmatic navigation, and accessing URL parameters, respectively.
+*   **`App` (../App)**: Imports the `API` constant, which is the base URL for backend API requests.
+*   **`axios`**: Promise-based HTTP client for making API requests to the backend.
+*   **`ToastContainer`, `toast` (react-toastify)**: Library for displaying notification messages.
+*   **`Spin` (antd)**: Ant Design component for displaying loading status.
+*   **`LoadingOutlined` (@ant-design/icons)**: Icon from Ant Design used within the `Spin` component.
 
 ### Design Notes
-*   The component leverages `react-hook-form` for streamlined form state management and validation, reducing manual state handling.
-*   API communication is handled via `axios`, centralizing HTTP requests.
-*   User feedback for success/failure is provided through `react-toastify` notifications.
-*   A global `API` constant is imported from `../App`, suggesting a centralized configuration for the backend endpoint.
-*   The use of `useParams` implies that the password reset mechanism relies on a token passed directly in the URL, a common pattern for token-based password resets.
-*   The code contains significant commented-out sections (e.g., `setSuccessPage`, alternative `onSubmit` logic, different form structures) indicating either work in progress, removed features, or alternative implementation attempts. The currently active logic does not navigate to `/login` immediately on success, unlike the commented-out code.
+*   The component relies heavily on `react-hook-form` for efficient form handling and validation, reducing boilerplate.
+*   State variables like `isPassVisible` and `successPage` are declared but not actively used or modified in the current functional code, indicating either incomplete features or commented-out functionality.
+*   There are commented-out sections of JSX and JavaScript logic, particularly related to an "emailField" and a "successPage", suggesting that the component's functionality might have been designed for a multi-step password reset process or different display states that are currently disabled.
+*   The `API` constant is imported from `../App`, centralizing the API base URL configuration.
+*   Direct API interaction through `axios` means the component is tightly coupled with the backend's authentication endpoint.
 
-### Diagram
+### Diagram 
 ```mermaid
 graph TD
-UserAccessesURL[User Accesses URL with Token] --> PasswordPageResetComponent[PasswordPageReset Component]
-PasswordPageResetComponent --> ExtractToken[Extract Token from URL]
-PasswordPageResetComponent --> DisplayPasswordForm[Display New Password Form]
-DisplayPasswordForm --> UserInput[User Enters New Password]
-UserInput --> FormSubmit[Submit Form]
-FormSubmit --> SetLoadingTrue[Set Loading State to True]
-SetLoadingTrue --> APIRequest[Axios POST to /auth/resetpassword/token]
-APIRequest -- Success --> ShowSuccessToast[Show "Password Changed Successfully" Toast]
-APIRequest -- Failure --> ShowErrorToast[Show Error Toast]
-ShowSuccessToast --> SetLoadingFalseSuccess[Set Loading State to False]
-ShowErrorToast --> SetLoadingFalseError[Set Loading State to False]
+A[UserLoadsPasswordPage] --> B[ExtractTokenFromURL]
+B --> C{RenderPasswordResetForm}
+C --> D[UserEntersNewPassword]
+D --> E[UserSubmitsForm]
+E --> F{ValidateInputClientSide}
+F --> G{ShowLoadingSpinner}
+G --> H{APICallToResetPasswordEndpoint}
+H --> I{ReceiveAPIResponse}
+I -- Success --> J[DisplaySuccessToast]
+I -- Failure --> K[DisplayErrorToast]
 ```
