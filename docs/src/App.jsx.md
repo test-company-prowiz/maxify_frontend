@@ -7,46 +7,45 @@
 # src/App.jsx
 
 ### Overview
-This file defines the main application component, `App`, which is responsible for setting up client-side routing using `react-router-dom`. It maps various URL paths to their corresponding page components, forming the core navigation structure of the application.
+This file serves as the main entry point for the client-side React application, primarily responsible for configuring and managing client-side routing using `react-router-dom`. It defines the various routes and their corresponding page components.
 
 ### Architecture & Role
-This file serves as the entry point for the React application's user interface and routing layer. It belongs to the presentation layer, orchestrating how different views are rendered based on the browser's URL.
+This file resides at the application's root level within the frontend architecture. It functions as the top-level orchestrator for client-side navigation, belonging to the presentation layer. It integrates different page components into a cohesive single-page application experience.
 
 ### Key Components
-*   **`App` Function Component**: The root component that encapsulates the entire application's routing logic.
-*   **`BrowserRouter`**: Enables HTML5 history API for clean URLs within the application.
-*   **`Routes`**: A container for defining individual `Route` components.
-*   **`Route` Components**: Each `Route` maps a specific URL `path` to a React `element` (a page component).
-*   **`API` Constant**: Exports the base URI for the backend API, `https://maxify.prowiz.io`.
-*   **Page Components**: Imports several page components from `./Pages/*` such as `Login`, `ResetPassword`, `Dashboards`, `Home`, `Admin`, `Dash`, and `PasswordPageReset`.
+*   **`App` Function Component**: The root React component that encapsulates the entire application, including the router and all defined routes.
+*   **`BrowserRouter`**: A component from `react-router-dom` that uses the HTML5 history API to keep the UI in sync with the URL.
+*   **`Routes`**: A component that groups individual `Route` components. It renders the first `Route` that matches the current URL.
+*   **`Route`**: Defines a specific path and the React component to render when that path is active.
+*   **`API` Constant**: A globally exported string constant holding the base URI for the backend API (`https://maxify.prowiz.io`).
 
 ### Execution Flow / Behavior
-When the application starts, the `App` component renders. The `BrowserRouter` initializes client-side routing. Based on the current browser URL, the `Routes` component matches the URL to a defined `Route` and renders the associated page component. For example, navigating to `/login` or `/` will render the `Login` component, while `/dashboards` will render the `Dashboards` component. A dynamic route `/resetpassword/:token` is handled by `PasswordPageReset`.
+When the application initializes, the `App` component renders. The `BrowserRouter` sets up listening for URL changes. Inside `BrowserRouter`, the `Routes` component evaluates the current URL path against its defined `Route` components. Upon a match, the associated page component (e.g., `Login`, `Dashboards`, `Admin`) is rendered within the application's main content area, facilitating navigation without full page reloads.
 
 ### Dependencies
-*   **`react-router-dom`**: Provides the foundational components (`BrowserRouter`, `Route`, `Routes`) for declarative routing.
-*   **`./App.css`**: Supplies global styles for the application.
-*   **`./Pages/Login`**: The component for user authentication.
-*   **`./Pages/ResetPassword`**: The component for initial password reset requests.
-*   **`./Pages/Dashboards`**: The component for displaying multiple dashboards.
-*   **`./Pages/Dash`**: The component for displaying a specific dashboard.
-*   **`./Pages/Password`**: The component for handling password changes, specifically `PasswordPageReset` route.
-*   **`./Pages/Admin`**: The component for administrative functions.
-*   **`./Pages/Home`**: The component for the main home page.
+*   **`react-router-dom`**: External library providing the core routing functionality (`BrowserRouter`, `Route`, `Routes`).
+*   **`./App.css`**: Internal stylesheet for styling the root `App` component.
+*   **`./Pages/Login`**: Internal component, rendered for the `/login` and `/` paths.
+*   **`./Pages/ResetPassword`**: Internal component, rendered for the `/resetpassword` path.
+*   **`./Pages/Dashboards`**: Internal component, rendered for the `/dashboards` path.
+*   **`./Pages/Home`**: Internal component, rendered for the `/home` path.
+*   **`./Pages/Admin`**: Internal component, rendered for the `/admin` path.
+*   **`./Pages/Dash`**: Internal component, rendered for the `/dash` path.
+*   **`./Pages/Password`**: Internal component, aliased as `PasswordPageReset`, rendered for the `/resetpassword/:token` path.
 
 ### Design Notes
-The routing is centrally managed within this `App.jsx` file, providing a clear overview of all available routes. The `API` constant is directly exported from this file, making the API endpoint readily available throughout the application. There are instances where the same component (`Dash` and `Password`) is imported with different aliases or the same path (`/` and `/login`) renders the same component, which indicates specific routing intentions or initial redirect logic. The `KPI` import is unused.
+The application employs a centralized routing configuration within the `App.jsx` file. This approach makes it straightforward to inspect all available routes. The `API` constant is exported globally for easy access across the application to the backend endpoint. A potential area for refinement could be the multiple imports from `./Pages/Password` (`Password` and `PasswordPageReset`), which might indicate an opportunity for clearer component naming or aliases if they represent distinct functionalities.
 
 ### Diagram
 ```mermaid
 graph TD
-App --> BrowserRouter
-BrowserRouter --> Routes
-Routes --> Login[Login Page]
-Routes --> ResetPassword[ResetPassword Page]
-Routes --> Dashboards[Dashboards Page]
-Routes --> Home[Home Page]
-Routes --> Admin[Admin Page]
-Routes --> Dash[Dash Page]
-Routes --> PasswordReset[Password Page Reset]
+A[App] --> B[BrowserRouter]
+B --> C[Routes]
+C --> D[Login]
+C --> E[ResetPassword]
+C --> F[Dashboards]
+C --> G[Home]
+C --> H[Admin]
+C --> I[Dash]
+C --> J[PasswordPageReset]
 ```
