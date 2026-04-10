@@ -7,61 +7,50 @@
 # src/App.jsx
 
 ### Overview
-This file serves as the main entry point for the React application, configuring its top-level structure and client-side routing. It defines the core navigation paths and associates them with specific page components.
+This file defines the root React component for the client-side application. Its primary purpose is to establish client-side routing using `react-router-dom` and to serve as the entry point for rendering different page components based on the URL path. It also exports a constant for the backend API base URL.
 
 ### Architecture & Role
-This component is the root of the user interface layer. It orchestrates the rendering of different pages based on the URL, acting as a presentation-layer router that manages the overall application flow and user experience.
+Architecturally, this file represents the top-level component of the presentation layer in a Single-Page Application (SPA) frontend. It sits above individual page components and orchestrates which component is rendered at a given time, effectively managing the application's overall structure and navigation flow.
 
 ### Key Components
-- `App`: The primary functional React component that encapsulates the entire application.
-- `BrowserRouter`: A React Router component enabling client-side routing using the HTML5 history API.
-- `Routes`: A container component for `Route` definitions, ensuring only one route matches and renders at a time.
-- `Route`: Defines a specific URL path and the React component to render when that path is active.
-- `API`: A globally exported constant string representing the base URL for backend API requests.
-- Page Components:
-    - `Login` (`./Pages/Login`): Handles user authentication.
-    - `ResetPassword` (`./Pages/ResetPassword`): Initiates password reset workflows.
-    - `Dashboards` (`./Pages/Dashboards`): Displays a collection of dashboards.
-    - `Home` (`./Pages/Home`): Provides a main application entry point or overview.
-    - `Admin` (`./Pages/Admin`): For administrative tasks.
-    - `Dash` (`./Pages/Dash`): A specific dashboard view.
-    - `PasswordPageReset` (`./Pages/Password`): Used for setting a new password, particularly with a reset token.
+*   **`App` function**: The main functional React component responsible for rendering the application's routing structure.
+*   **`API` constant**: A globally exported string constant holding the base URI for backend API calls.
+*   **`BrowserRouter`**: A component from `react-router-dom` that uses the HTML5 history API to keep the UI in sync with the URL.
+*   **`Routes`**: A component from `react-router-dom` that renders the first `Route` that matches the current URL.
+*   **`Route`**: Components defining specific URL paths and the React elements (page components) to render when those paths are active.
+*   **Page Components**: Imported components (`Login`, `ResetPassword`, `Dashboards`, `Home`, `Admin`, `Dash`, `PasswordPageReset`) that represent distinct views or pages within the application.
 
 ### Execution Flow / Behavior
-1. The `App` component renders, initializing the `BrowserRouter` to manage URL changes without full page reloads.
-2. Inside `BrowserRouter`, the `Routes` component defines a set of possible navigation paths.
-3. When the browser URL matches a defined `Route` path, the corresponding element (a React component) is rendered within the `App` component's structure.
-4. The application's default path (`/` and `/login`) routes to the `Login` component, making it the initial view.
-5. A dynamic route `/resetpassword/:token` allows for token-based password resets, rendering the `PasswordPageReset` component.
+When the application starts, the `App` component is rendered. It sets up `BrowserRouter` to listen for URL changes. Inside `BrowserRouter`, a `Routes` component is configured with multiple `Route` definitions. At runtime, `Routes` evaluates the current browser URL against the defined `path` props. When a match is found, the corresponding `element` (a page component like `<Login/>` or `<Dashboards/>`) is rendered, replacing any previously rendered page within the `Routes` container. The `API` constant is available for any module that imports it, providing a consistent backend endpoint.
 
 ### Dependencies
-- `react-router-dom`: Provides routing capabilities (`BrowserRouter`, `Route`, `Routes`).
-- `./App.css`: Stylesheet for global application styling.
-- `./Pages/Login`: Core dependency for user authentication.
-- `./Pages/ResetPassword`: Handles the initial password reset request.
-- `./Pages/Dashboards`: Component to display a list of available dashboards.
-- `./Pages/Home`: Primary landing page for authenticated users.
-- `./Pages/Admin`: Provides administrative interface functionality.
-- `./Pages/Dash`: Specific dashboard display component.
-- `./Pages/Password`: Handles actual password update logic, including token-based resets.
+*   **`react-router-dom`**: External library providing client-side routing capabilities (`BrowserRouter`, `Route`, `Routes`).
+*   **`./App.css`**: Styling for the root `App` component.
+*   **Page Components**:
+    *   `./Pages/Login`
+    *   `./Pages/ResetPassword`
+    *   `./Pages/Dashboards`
+    *   `./Pages/Home`
+    *   `./Pages/Admin`
+    *   `./Pages/Dash`
+    *   `./Pages/Password` (imported as `PasswordPageReset`)
 
 ### Design Notes
-- The use of `react-router-dom` centralizes and simplifies client-side navigation logic, making it declarative.
-- Exporting the `API` constant ensures a single source of truth for the backend endpoint, improving maintainability and configuration management.
-- The `Login` component is set as the default view for both the root path (`/`) and `/login`, indicating an authentication-first design.
-- The file exhibits multiple import aliases for the same component file (e.g., `KPI` and `Dash` both from `./Pages/Dash`; `Password` and `PasswordPageReset` both from `./Pages/Password`). This suggests potential for code clarity improvements, perhaps through consistent naming or component consolidation.
+*   The `API` constant provides a centralized location for the backend URI, making it easy to configure different environments (e.g., development, staging, production).
+*   The application uses a declarative routing approach, clearly defining path-to-component mappings.
+*   There are multiple imports from the same file, e.g., `KPI` and `Dash` from `./Pages/Dash`, and `Password` and `PasswordPageReset` from `./Pages/Password`. While `PasswordPageReset` and `Dash` are used in routes, `KPI` and `Password` are imported but not directly utilized within the `App` component's JSX, which suggests potential dead code or aliases not leveraged in the main router.
+*   The root path `/` and `/login` both map to the `<Login/>` component, acting as an alias or default landing page.
+*   The route `/resetpassword/:token` utilizes a URL parameter (`:token`), indicating dynamic content based on a token embedded in the URL.
 
 ### Diagram
 ```mermaid
 graph TD
-App[App] --> BrowserRouter[BrowserRouter]
-BrowserRouter --> Routes[Routes]
-Routes --> LoginRoute[Route /login - Login]
-Routes --> RootRoute[Route / - Login]
-Routes --> ResetPasswordRoute[Route /resetpassword - ResetPassword]
-Routes --> DashboardsRoute[Route /dashboards - Dashboards]
-Routes --> HomeRoute[Route /home - Home]
-Routes --> AdminRoute[Route /admin - Admin]
-Routes --> DashRoute[Route /dash - Dash]
-Routes --> ResetTokenRoute[Route /resetpassword/:token - PasswordPageReset]
+A[App] --> B[BrowserRouter]
+B --> C[LoginPage]
+B --> D[ResetPasswordPage]
+B --> E[DashboardsPage]
+B --> F[HomePage]
+B --> G[AdminPage]
+B --> H[DashPage]
+B --> I[PasswordResetPage]
 ```
