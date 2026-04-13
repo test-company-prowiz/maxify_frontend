@@ -7,22 +7,22 @@
 # src/Components/Footer.jsx
 
 ### Overview
-This file defines the `Footer` React component, responsible for rendering a consistent footer section across the application. It displays static text and a visual separator.
+This file defines the `Footer` React component, which is responsible for rendering a consistent footer section at the bottom of the application's user interface.
 
 ### Architecture & Role
-This component operates within the application's user interface layer, specifically as a presentational component. Its role is to provide a fixed, bottom-of-page informational area, contributing to the overall page layout.
+The `Footer` component operates within the application's UI layer. It serves as a presentational component, providing a static content area typically used for branding or informational text. Its role is to ensure a uniform footer is displayed across the system where integrated.
 
 ### Key Components
--   **`Footer` functional component**: The primary export, which renders the footer's structure and content using React.
+- `Footer`: A functional React component that renders the footer content.
 
 ### Execution Flow / Behavior
-When imported and rendered within a parent component, the `Footer` component executes, returning a JSX structure. This structure consists of a `div` element configured with Tailwind CSS classes to position it fixed at the bottom of the viewport, containing a horizontal line and a paragraph of text.
+When a parent component renders the `Footer`, it displays a horizontally centered div containing a separator line and a paragraph of text ("Client Portal | Maxify Limited"). The component is styled to be fixed at the bottom of the viewport using CSS utility classes.
 
 ### Dependencies
--   **`react`**: Used for defining the functional component and rendering UI elements.
+- `react`: Provides the foundational library for creating the `Footer` functional component.
 
 ### Design Notes
-The component utilizes inline Tailwind CSS classes for styling, including flexbox layouts, fixed positioning, and direct color/sizing specifications. This approach centralizes styling within the component definition. The fixed positioning ensures the footer remains visible at the bottom of the viewport regardless of scroll position.
+The component uses inline Tailwind CSS classes for styling and layout, including flexbox utilities for content alignment, fixed positioning (`fixed bottom-0`) to keep it at the bottom of the screen, and specific background/text colors. The `w-[95%] h-[2px] mr-[5%]` class on the separator div creates a line that spans most of the width, with a margin on the right.
 
 ### Diagram
 None significant.
