@@ -15,10 +15,8 @@ The repository implements a React-based Single-Page Application (SPA) utilizing 
 ### Core Components
 *   **Google App Engine (GAE)**: Cloud platform hosting the frontend, configured by `app.yaml`.
 *   **React**: Primary JavaScript library for building the user interface.
-*   **`react-router-dom`**: Manages client-side navigation.
-*   **`react-scripts`**: Create React App tooling for development, build, and testing.
-*   **Ant Design (`antd`)**: Comprehensive UI component library.
-*   **Tailwind CSS**: Utility-first CSS framework for granular styling.
+*   **`react-router-dom`**: Manages client-side navigation within the SPA.
+*   **Ant Design (`antd`) & Tailwind CSS**: Provide comprehensive UI components and utility-first styling.
 *   **`axios`**: HTTP client for asynchronous backend API requests.
 *   **`react-hook-form`**: Facilitates robust form management and validation.
 *   **`jwt-decode`**: Utility for client-side decoding of JSON Web Tokens.
@@ -32,7 +30,7 @@ The repository implements a React-based Single-Page Application (SPA) utilizing 
 3.  **Client-Side Bootstrap**: The browser loads `index.html`, which then executes the JavaScript bundle (`src/index.js`).
 4.  **React Application Mount**: `src/index.js` mounts the root `App` component into the `div id="root"` within `index.html`.
 5.  **Client-Side Routing**: `App.jsx`, using `react-router-dom`, manages URL changes and renders the appropriate page component from `src/Pages/`.
-6.  **User Interaction & API Calls**: User actions (e.g., form submissions) are managed by `react-hook-form`. `axios` makes HTTP requests to backend API endpoints (defined by the `API` constant in `App.jsx`).
+6.  **User Interaction & API Calls**: User actions (e.g., form submissions via `react-hook-form`) trigger `axios` HTTP requests to backend API endpoints (configured by the `API` constant in `App.jsx`).
 7.  **UI Updates**: Backend responses trigger React state updates, leading to UI changes such as loading indicators or `react-toastify` notifications.
 8.  **Client-Side Authentication**: Actions like "Log Out" (in `Header.jsx`) clear client-side `localStorage` entries (e.g., `data`) for tokens.
 9.  **Performance Monitoring**: `src/reportWebVitals.js` dynamically loads `web-vitals` to collect and report performance metrics.
