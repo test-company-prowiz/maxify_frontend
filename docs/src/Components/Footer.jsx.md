@@ -7,22 +7,22 @@
 # src/Components/Footer.jsx
 
 ### Overview
-This file defines the `Footer` React component, which provides a consistent footer section across the application's user interface. It displays static text identifying the client portal and company.
+This file defines the `Footer` React component, responsible for rendering a consistent footer section across the application's user interface.
 
 ### Architecture & Role
-This component operates within the presentation layer of the application. It is a reusable UI component intended for integration into page layouts or root application components to ensure a uniform bottom section.
+This component operates at the presentation layer within the client-side architecture. It resides in the `Components` directory, indicating its role as a reusable UI element. It is a child component that provides static branding and a separator line.
 
 ### Key Components
-- `Footer`: A functional React component responsible for rendering the footer UI element.
+-   **`Footer` functional component**: Renders a `div` containing a horizontal line and a paragraph with "Client Portal | Maxify Limited" text. It uses fixed positioning to remain at the bottom of the viewport.
 
 ### Execution Flow / Behavior
-When rendered, the `Footer` component produces a `div` element configured with Tailwind CSS classes for styling, positioning it at the bottom of the viewport. It contains a horizontal separator line and a paragraph displaying "Client Portal | Maxify Limited".
+When the `Footer` component is included in a parent component's render tree, it executes its JSX to produce a fixed-position HTML footer element. It renders static text and a decorative separator line, styled using Tailwind CSS classes.
 
 ### Dependencies
-- `react`: Essential for defining the functional React component and utilizing JSX syntax.
+-   **`react`**: Used for defining the functional component and its JSX structure.
 
 ### Design Notes
-The component uses inline Tailwind CSS classes for styling, which keeps presentation logic localized to the component. Its `fixed bottom-0` positioning ensures it remains visible at the bottom of the screen.
+The component utilizes Tailwind CSS classes for styling, including flexbox layouts, positioning (`fixed bottom-0`), width, height, and background colors. It implements a simple, static design suitable for a page footer without dynamic content or state.
 
 ### Diagram
 None significant.
