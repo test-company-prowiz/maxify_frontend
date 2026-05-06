@@ -7,37 +7,49 @@
 # src/Components/Header.jsx
 
 ### Overview
-This file defines the `Header` React component, which provides global navigation and user account access points across the application. It displays a logo, a "My Account" dropdown, and handles routing based on user interactions.
+This file defines the `Header` React functional component, which provides a consistent navigation bar at the top of application pages. It includes the application logo and a user account dropdown menu, facilitating global navigation and user session management.
 
 ### Architecture & Role
-This component operates within the presentation layer of the frontend application. It functions as a top-level UI element, responsible for consistent branding and user interaction mechanisms. It is intended to be rendered at the root or a high-level layout component.
+This component operates at the presentation layer of the frontend application. It functions as a reusable UI element, responsible for displaying application branding and providing user-related navigation links, ensuring a consistent header across various routes.
 
 ### Key Components
-*   **Header (function component)**: The primary component responsible for rendering the application header.
-*   **`useState` hook**: Manages the `hover` state for the "My Account" dropdown visibility.
-*   **`useNavigate` hook**: Provided by `react-router-dom` for programmatic navigation.
-*   **`isNavigatable` (prop)**: A boolean flag controlling whether certain navigation actions are active.
-*   **`isHomeNav` (prop)**: A boolean flag that conditionally applies a background color to the header.
+*   **`Header(props)`**: The primary functional React component responsible for rendering the header UI.
+    *   `isNavigatable` (prop): A boolean that controls whether certain navigation actions (e.g., clicking the logo or "Home" link) are active.
+    *   `isHomeNav` (prop): A boolean that determines the background styling of the header, likely for differentiating home page appearance.
+*   **`useState(false)`**: Manages the `hover` state, which controls the conditional visibility of the "My Account" dropdown menu.
+*   **`useNavigate()`**: A hook from `react-router-dom` used for programmatic navigation within the application.
 
 ### Execution Flow / Behavior
-The `Header` component renders a horizontal bar containing a logo and a "My Account" section.
-*   Clicking the logo navigates to `/home` if `isNavigatable` is true.
-*   Hovering over the "My Account" section reveals a dropdown menu.
-*   The dropdown contains "Home", "Log Out", and "Change Password" options.
-*   Clicking "Home" in the dropdown navigates to `/home` if `isNavigatable` is true.
-*   Clicking "Log Out" navigates to `/login` and removes the item named "data" from `localStorage`.
-*   Clicking "Change Password" navigates to `/resetpassword`.
-*   The background color of the header changes based on the `isHomeNav` prop.
+1.  The `Header` component renders a navigation bar `div` at the top of the viewport. Its background color is dynamically set based on the `isHomeNav` prop.
+2.  An application logo is displayed on the left side. Clicking the logo triggers navigation to the `/home` route, but only if the `isNavigatable` prop is `true`.
+3.  A "My Account" section is positioned on the right, containing a login icon, text, and a dropdown arrow.
+4.  Hovering over the "My Account" section sets the internal `hover` state to `true`, causing a dropdown menu to appear. Moving the mouse out of this area sets `hover` to `false`, hiding the dropdown.
+5.  The dropdown menu provides three interactive options:
+    *   **Home**: Navigates to the `/home` route if `isNavigatable` is `true`.
+    *   **Log Out**: Navigates to the `/login` route and simultaneously removes the "data" item from `localStorage`.
+    *   **Change Password**: Navigates to the `/resetpassword` route.
 
 ### Dependencies
-*   **`react`**: Used for building the UI component and managing state with `useState`.
-*   **`react-router-dom`**: Provides the `useNavigate` hook for client-side routing functionality.
-*   **`../Assets/logo.png`**: Application logo image.
-*   **`../Assets/Login_icon 1.svg`**: Icon for the login/account section.
-*   **`../Assets/downArrow.svg`**: Icon for the "My Account" dropdown indicator.
+*   **`react`**: Provides the core functionality for defining React components and managing component-local state via `useState`.
+*   **`react-router-dom`**: Supplies the `useNavigate` hook, essential for client-side routing and programmatic URL changes.
+*   **`../Assets/logo.png`**: A static image asset used for the application's main brand logo.
+*   **`../Assets/Login_icon 1.svg`**: A static SVG image asset used as an icon within the "My Account" section.
+*   **`../Assets/downArrow.svg`**: A static SVG image asset used as a visual indicator for the dropdown menu.
 
 ### Design Notes
-The component utilizes props (`isNavigatable`, `isHomeNav`) to manage behavioral and stylistic variations, promoting reusability. The `localStorage.removeItem("data")` call upon logout suggests a simple client-side session management approach. The dropdown uses direct CSS positioning and hover states, which could be refactored into a more robust, accessible dropdown component for complex interactions.
+The `Header` component demonstrates prop-driven customization for navigation behavior and styling, enhancing its reusability across different parts of the application. The dropdown menu's visibility is managed using local state and `onMouseOver`/`onMouseOut` events. Direct interaction with `localStorage` for session management (logout) is handled within the component. Styling is integrated directly using Tailwind CSS classes.
 
 ### Diagram
-None significant.
+```mermaid
+graph TD
+A[HeaderComponent] --> B[RenderHeaderUI]
+B --> C[LogoElement]
+B --> D[MyAccountElement]
+C -- ClickIfNavigatable --> E[NavigateToHome]
+D -- MouseOver --> F[ShowDropdownMenu]
+F -- ClickHomeIfNavigatable --> E
+F -- ClickLogout --> G[ClearLocalStorage]
+G --> H[NavigateToLogin]
+F -- ClickChangePassword --> I[NavigateToResetPassword]
+D -- MouseOut --> J[HideDropdownMenu]
+```
