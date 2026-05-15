@@ -7,33 +7,29 @@
 # src/App.css
 
 ### Overview
-This file defines global CSS rules for the application. It includes typographic styles, visual indicators for error states, layering properties for UI elements, and styles for a loading overlay and a sidebar navigation component.
+This file defines global and common CSS styles used across the application. It includes typographic styles, visual indicators for error states, layering context for UI elements, and layout adjustments for specific components.
 
 ### Architecture & Role
-This file operates within the presentation layer of the application. Its role is to provide foundational and common styling for various user interface components, ensuring a consistent visual design across the application. It is typically imported at the root level of a client-side application to make its styles universally available.
+This file operates at the presentation layer of the frontend architecture. It provides styling rules that are consumed by the browser's rendering engine to visually present HTML elements, typically within a React application context.
 
 ### Key Components
-- `.graphik-font`: Applies the 'Graphik' typeface.
-- `.quicksand-font`: Applies the 'Quicksand' typeface.
-- `.error_outline`: Renders a 2px solid red border, primarily for indicating validation errors or issues.
-- `.no_outline`: Renders a 2px solid black border.
-- `.profile`: Assigns a high `z-index` (100) to ensure visibility over most other elements.
-- `#dynamic_form_complex`: Sets a fixed width of 600px for a specific form element.
-- `.no-profile`: Assigns a lower `z-index` (10).
-- `.spinning_indicator`: Creates a full-screen, semi-transparent white overlay with centered content, typically used to display a loading spinner.
-- `.sidenav`: Defines a height calculation (`100vh - 80px`) for a sidebar navigation element.
+- `.graphik-font`: Applies the 'Graphik' font family.
+- `.quicksand-font`: Applies the 'Quicksand' font family.
+- `.error_outline`, `.error_outline:focus`: Styles for indicating error states with a red border.
+- `.no_outline`: Defines a black border, likely for resetting or default states.
+- `.profile`, `.no-profile`: Control the `z-index` property, managing stacking order for UI elements.
+- `#dynamic_form_complex`: Sets a fixed width for a specific form element.
+- `.spinning_indicator`: Styles a full-screen overlay with a semi-transparent background and centered content, typically used for loading states.
+- `.sidenav`: Adjusts the height of a sidebar component relative to the viewport.
 
 ### Execution Flow / Behavior
-When the application loads, the browser parses these CSS rules. They are then applied to HTML elements that match the specified selectors. For example, any element with the class `spinning_indicator` will cover its parent container, become semi-transparent, and center its child content. Styles like `error_outline` dynamically change the appearance of elements based on their assigned class.
+When the application loads, the browser parses the CSS rules defined in this file. These rules are then applied to HTML elements that match the specified selectors (classes, IDs, or element types). The styles dictate visual properties such as fonts, colors, borders, dimensions, and stacking order.
 
 ### Dependencies
-- **Internal:** Other UI components and pages throughout the application depend on the classes defined in this file for their styling. This file is typically imported by a main application component (e.g., `App.js` or `index.js`).
-- **External:** The font families `Graphik` and `Quicksand` are expected to be available, likely loaded via `@font-face` rules defined elsewhere or through a CDN.
+This file implicitly depends on the HTML structure of the application, as its selectors target specific elements. It also depends on the 'Graphik' and 'Quicksand' font families being available, either through a font loading mechanism or system defaults.
 
 ### Design Notes
-- The use of `!important` on several rules, particularly for `font-family` and `border`, indicates potential specificity conflicts or a strong desire to override other styles. This can complicate future style modifications.
-- Fixed pixel values for `width` and `height` (e.g., `600px` for `#dynamic_form_complex`, `calc(100vh - 80px)` for `.sidenav`) introduce rigidness that may not adapt well to responsive designs or varying screen sizes without additional media queries.
-- Global `z-index` management via `.profile` and `.no-profile` requires careful coordination across the application to prevent unintended stacking issues.
+The use of `!important` in several rules (e.g., `font-family`, `border`, `z-index`, `width`) suggests potential specificity conflicts or a need to override styles from other sources. This approach can make CSS maintenance and debugging more challenging. The file centralizes common UI patterns like error indicators and loading overlays, promoting consistency.
 
 ### Diagram
 None significant.
