@@ -1,36 +1,56 @@
+# REPOSITORY_OVERVIEW.md
+
+> **Source File:** [REPOSITORY_OVERVIEW.md](https://github.com/test-company-prowiz/maxify_frontend/blob/main/REPOSITORY_OVERVIEW.md)
+> **Repository:** `maxify_frontend`
+> **Branch:** `main`
+
 # maxify_frontend — Repository Overview
 
 ### High-Level Purpose
-This repository hosts the frontend web application for the Maxify system. Its primary objective is to provide a user interface for managing and displaying data, including dashboards, administrative functions, and user authentication workflows (login, password reset).
+The `maxify_frontend` repository provides a user-facing web application designed to display various dashboards for authenticated users. Its primary objective is to fetch user-specific data from a backend API, present it in an organized dashboard interface, and facilitate navigation within the application.
 
 ### Architectural Structure
-The repository implements a client-side Single Page Application (SPA) architecture using React. The core structure is organized around a central routing mechanism, with distinct page components residing in a dedicated `Pages` directory. The `App.jsx` file serves as the application's root, orchestrating routing and overall application layout.
+The repository is structured as a client-side React single-page application (SPA). It follows a component-based architecture, organizing UI elements into reusable components and page-level containers.
+Key structural elements include:
+*   `src/Pages`: Contains top-level components representing distinct application views or pages (e.g., `Home.jsx`).
+*   `src/Components`: Houses reusable UI components shared across different pages (e.g., `Header`).
+*   `src/Assets`: Stores static assets such as SVG icons.
 
 ### Core Components
--   **`App` Component**: The root React component responsible for application initialization and global routing.
--   **`react-router-dom`**: Provides the declarative routing infrastructure (`BrowserRouter`, `Routes`, `Route`) to navigate between different application views.
--   **Page Components**: Individual React components (e.g., `Login`, `Dashboards`, `Admin`, `Home`) that represent specific views or functionalities within the application.
--   **`API` Constant**: A globally available constant defining the base URL for backend API interactions.
+*   **Page Components**: Components like `Home` that serve as entry points for specific routes, orchestrating data fetching and rendering of sub-components.
+*   **Reusable UI Components**: Generic components (e.g., `Header`) that provide consistent UI elements and functionality across the application.
+*   **Client-Side Router**: Manages navigation between different application views without full page reloads, using `react-router-dom`.
+*   **API Client**: Handles HTTP requests to interact with the backend API, utilizing `axios`.
+*   **Authentication Module**: Manages user session state and authentication checks, primarily by inspecting `localStorage`.
+*   **Data Presentation Module**: Responsible for rendering fetched data, such as lists of dashboards, often incorporating loading states.
 
 ### Interaction & Data Flow
-Upon loading, the browser renders the `App` component, which initializes client-side routing. User navigation triggers the `react-router-dom` system to match the current URL path with a defined `Route`, subsequently rendering the corresponding page component. These page components are expected to interact with a backend API to fetch and submit data, utilizing the `API` base URL for request construction.
+User interaction initiates with navigation to a specific route. The frontend application checks for existing authentication data, typically stored in `localStorage`. If authenticated, it dispatches API requests to the backend to retrieve user-specific information and dashboard data. The backend responds with the requested data, which the frontend then processes and renders into the user interface. User actions, such as clicking on a dashboard item, trigger client-side routing to display detailed views. Unauthenticated or erroneous states lead to redirection to the login page.
 
 ### Technology Stack
--   **React**: Core JavaScript library for building user interfaces.
--   **`react-router-dom`**: Library for declarative client-side routing in React applications.
--   **CSS**: For styling the application components.
+*   **Frontend Framework**: React
+*   **Routing**: React Router DOM
+*   **HTTP Client**: Axios
+*   **UI Library**: Ant Design (antd) for specific components like `Skeleton`
+*   **Styling**: Tailwind CSS for utility-first styling
+*   **Language**: JavaScript (ES6+)
 
 ### Design Observations
--   Client-side routing is centrally managed in `App.jsx`, providing a clear overview of application paths.
--   The API base URL is hardcoded, which could be improved by using environment variables for better flexibility across deployment environments.
--   There are opportunities for code cleanup, such as removing unused imports and resolving redundant component imports/aliasing.
--   The application defaults to a login page for the root path, indicating an authentication-gated system.
+*   **Client-Side Authentication**: The application relies on `localStorage` for managing user sessions and authentication status, which simplifies client-side state but requires careful consideration for security best practices, particularly regarding token storage and invalidation.
+*   **User Experience**: Employs loading indicators (e.g., `antd`'s `Skeleton`) to improve perceived performance during data fetching.
+*   **External Integrations**: Incorporates direct links to external services for support and plan upgrades, suggesting a modular approach for non-core functionalities.
+*   **Configuration**: API endpoints are likely managed through a global constant (`API`), allowing for environment-specific configurations.
 
 ### System Diagram
 ```mermaid
 graph TD
-User --> MaxifyFrontendApplication[MaxifyFrontend Application]
-MaxifyFrontendApplication --> BrowserRouter[React Router]
-BrowserRouter --> PageComponents[Page Components]
-PageComponents --> BackendAPI[Backend API]
+User --> FrontendApplication
+FrontendApplication --> ClientSideRouting
+ClientSideRouting --> AuthenticationModule[Authentication Module]
+AuthenticationModule --> ApiServiceClient[API Service Client]
+ApiServiceClient --> BackendAPI[Backend API]
+BackendAPI --> ApiServiceClient
+ApiServiceClient --> FrontendApplication(Receive Data)
+FrontendApplication --> DataPresentation[Data Presentation Module]
+DataPresentation --> User(View UI)
 ```
