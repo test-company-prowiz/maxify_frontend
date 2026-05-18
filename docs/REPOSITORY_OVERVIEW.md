@@ -1,56 +1,55 @@
 # REPOSITORY_OVERVIEW.md
 
-> **Source File:** [REPOSITORY_OVERVIEW.md](https://github.com/test-company-prowiz/maxify_frontend/blob/main/REPOSITORY_OVERVIEW.md)
+> **Source File:** [REPOSITORY_OVERVIEW.md](https://github.com/test-company-prowiz/maxify_frontend/blob/develop/REPOSITORY_OVERVIEW.md)
 > **Repository:** `maxify_frontend`
-> **Branch:** `main`
+> **Branch:** `develop`
 
 # maxify_frontend — Repository Overview
 
 ### High-Level Purpose
-The `maxify_frontend` repository provides a user-facing web application designed to display various dashboards for authenticated users. Its primary objective is to fetch user-specific data from a backend API, present it in an organized dashboard interface, and facilitate navigation within the application.
+The `maxify_frontend` repository provides the user interface for an application, primarily focusing on presenting data, handling user interactions, and managing client-side application logic. Based on the `ResetPassword` page functionality, it includes user authentication and account management features.
 
 ### Architectural Structure
-The repository is structured as a client-side React single-page application (SPA). It follows a component-based architecture, organizing UI elements into reusable components and page-level containers.
-Key structural elements include:
-*   `src/Pages`: Contains top-level components representing distinct application views or pages (e.g., `Home.jsx`).
-*   `src/Components`: Houses reusable UI components shared across different pages (e.g., `Header`).
-*   `src/Assets`: Stores static assets such as SVG icons.
+The frontend is structured as a Single Page Application (SPA) built with React.
+*   **`src/Pages`**: Contains top-level components that represent distinct application views or pages.
+*   **Component-Based**: The user interface is composed of reusable React components.
+*   **Client-Side Routing**: `react-router-dom` manages navigation between different application routes.
+*   **API Interaction**: The application directly communicates with a backend API for data retrieval and state manipulation.
 
 ### Core Components
-*   **Page Components**: Components like `Home` that serve as entry points for specific routes, orchestrating data fetching and rendering of sub-components.
-*   **Reusable UI Components**: Generic components (e.g., `Header`) that provide consistent UI elements and functionality across the application.
-*   **Client-Side Router**: Manages navigation between different application views without full page reloads, using `react-router-dom`.
-*   **API Client**: Handles HTTP requests to interact with the backend API, utilizing `axios`.
-*   **Authentication Module**: Manages user session state and authentication checks, primarily by inspecting `localStorage`.
-*   **Data Presentation Module**: Responsible for rendering fetched data, such as lists of dashboards, often incorporating loading states.
+*   **Presentation Layer**: React components define the user interface, render data, and handle user input.
+*   **Form Management**: `react-hook-form` is utilized for efficient and validated handling of form state and submissions.
+*   **Routing**: `react-router-dom` provides declarative routing capabilities, enabling navigation between application pages.
+*   **API Client**: `axios` is used to make HTTP requests to the backend API, abstracting away native browser fetch complexities.
+*   **Notification System**: `react-toastify` provides a mechanism for displaying transient success or error messages to the user.
+*   **UI Library**: `Ant Design` components are integrated to provide a consistent visual language and pre-built UI elements.
 
 ### Interaction & Data Flow
-User interaction initiates with navigation to a specific route. The frontend application checks for existing authentication data, typically stored in `localStorage`. If authenticated, it dispatches API requests to the backend to retrieve user-specific information and dashboard data. The backend responds with the requested data, which the frontend then processes and renders into the user interface. User actions, such as clicking on a dashboard item, trigger client-side routing to display detailed views. Unauthenticated or erroneous states lead to redirection to the login page.
+The frontend operates as a client, initiating interactions with a backend API.
+1.  User interactions (e.g., form submissions, button clicks) trigger client-side events.
+2.  These events invoke specific functions that prepare and send HTTP requests via `axios` to defined backend API endpoints (e.g., for password reset initiation).
+3.  The frontend processes the responses received from the backend.
+4.  Based on the API response, the UI state is updated, which may involve displaying success or error messages, rendering new data, or navigating to a different page using `react-router-dom`.
 
 ### Technology Stack
-*   **Frontend Framework**: React
-*   **Routing**: React Router DOM
-*   **HTTP Client**: Axios
-*   **UI Library**: Ant Design (antd) for specific components like `Skeleton`
-*   **Styling**: Tailwind CSS for utility-first styling
-*   **Language**: JavaScript (ES6+)
+*   **Core Framework**: React
+*   **Routing**: `react-router-dom`
+*   **Form Management**: `react-hook-form`
+*   **HTTP Client**: `axios`
+*   **UI Component Library**: `antd` (Ant Design)
+*   **Notification Library**: `react-toastify`
+*   **Icons**: `@ant-design/icons`
 
 ### Design Observations
-*   **Client-Side Authentication**: The application relies on `localStorage` for managing user sessions and authentication status, which simplifies client-side state but requires careful consideration for security best practices, particularly regarding token storage and invalidation.
-*   **User Experience**: Employs loading indicators (e.g., `antd`'s `Skeleton`) to improve perceived performance during data fetching.
-*   **External Integrations**: Incorporates direct links to external services for support and plan upgrades, suggesting a modular approach for non-core functionalities.
-*   **Configuration**: API endpoints are likely managed through a global constant (`API`), allowing for environment-specific configurations.
+*   **Streamlined Form Handling**: The use of `react-hook-form` indicates a design choice to manage complex form logic and validation efficiently.
+*   **Clear User Feedback**: Integration of `react-toastify` and conditional rendering for loading and success states contributes to a responsive user experience.
+*   **Separation of Concerns**: The architecture clearly separates the frontend presentation and logic from backend business logic and data persistence, communicating via a RESTful API.
+*   **API Method Convention**: A potential area for review is the use of HTTP GET for operations that initiate state changes on the server, such as sending an email for password reset, which conventionally aligns better with HTTP POST.
 
 ### System Diagram
 ```mermaid
 graph TD
-User --> FrontendApplication
-FrontendApplication --> ClientSideRouting
-ClientSideRouting --> AuthenticationModule[Authentication Module]
-AuthenticationModule --> ApiServiceClient[API Service Client]
-ApiServiceClient --> BackendAPI[Backend API]
-BackendAPI --> ApiServiceClient
-ApiServiceClient --> FrontendApplication(Receive Data)
-FrontendApplication --> DataPresentation[Data Presentation Module]
-DataPresentation --> User(View UI)
+User[User] --> MaxifyFrontend[MaxifyFrontend];
+MaxifyFrontend --> BackendAPI[BackendAPI];
+BackendAPI --> EmailService[EmailService];
 ```
